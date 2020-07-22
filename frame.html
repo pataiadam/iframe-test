@@ -13,7 +13,8 @@
 </head>
 <body>
 <div id="app">
-  <p>Send Message: <button @click="onSend">Send to iframe</button></p>
+  <p>Iframe content</p>
+  <p>Send Message: <button @click="onSend">Send to parent</button></p>
   <p>Got Message: {{message}}</p>
 </div>
 
@@ -32,11 +33,11 @@
     },
     methods: {
       onSend() {
-        window.parent.postMessage('ye'+Math.random(), '*');
-        console.log('sent')
+        const message = 'ye'+Math.random();
+        window.parent.postMessage(message, '*');
       },
       handleIncome(msg) {
-        this.message=msg.data;
+        this.message = msg.data;
       }
     }
   })

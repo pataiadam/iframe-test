@@ -7,9 +7,9 @@
 </head>
 <body>
 <div id="app">
+  <p>Parent content</p>
   <p>Send Message: <button @click="onSend">Send to iframe</button></p>
   <p>Got Message: {{message}}</p>
-
   <iframe style="height: 300px" ref="iframe" :src="iframeSrc"></iframe>
 </div>
 
@@ -17,7 +17,6 @@
   const app = new Vue({
     el: '#app',
     data: {
-      //iframeSrc: 'http://frontelegance.com:9090/iframe.html',
       iframeSrc: 'http://frontelegance.com:10101/frame.html',
       message: ''
     },
@@ -30,11 +29,11 @@
     },
     methods: {
       onSend() {
-        this.$refs.iframe.contentWindow.postMessage("yo" + Math.random(), '*');
-        console.log('sent')
+        const iframeElement = this.$refs.iframe;
+        const message = "yo" + Math.random();
+        iframeElement.contentWindow.postMessage(message, '*');
       },
       handleIncome(msg) {
-        console.log('in')
         this.message=msg.data;
       }
     }
