@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Iframe test</title>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <p>Send Message: <button @click="onSend">Send to iframe</button></p>
+  <p>Got Message: {{message}}</p>
+
+  <iframe style="height: 300px" ref="iframe" :src="iframeSrc"></iframe>
+</div>
+
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      //iframeSrc: 'http://frontelegance.com:9090/iframe.html',
+      iframeSrc: 'http://frontelegance.com:9090/frame.html',
+      message: ''
+    },
+    mounted() {
+      if (window.addEventListener) {
+        window.addEventListener('message', this.handleIncome, false);
+      } else if (window.attachEvent) {
+        window.attachEvent('onmessage', this.handleIncome);
+      }
+    },
+    methods: {
+      onSend() {
+        this.$refs.iframe.contentWindow.postMessage("yo" + Math.random(), '*');
+        console.log('sent')
+      },
+      handleIncome(msg) {
+        console.log('in')
+        this.message=msg.data;
+      }
+    }
+  })
+</script>
+</body>
+</html>

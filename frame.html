@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Iframe</title>
+  <style>
+    body {
+      background-color: darkred;
+      color: white;
+    }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+<body>
+<div id="app">
+  <p>Send Message: <button @click="onSend">Send to iframe</button></p>
+  <p>Got Message: {{message}}</p>
+</div>
+
+<script>
+  const app = new Vue({
+    el: '#app',
+    data: {
+      message: ''
+    },
+    created() {
+      if (window.addEventListener) {
+        window.addEventListener('message', this.handleIncome, false);
+      } else if (window.attachEvent) {
+        window.attachEvent('onmessage', this.handleIncome);
+      }
+    },
+    methods: {
+      onSend() {
+        window.parent.postMessage('ye'+Math.random(), '*');
+        console.log('sent')
+      },
+      handleIncome(msg) {
+        this.message=msg.data;
+      }
+    }
+  })
+</script>
+</body>
+</html>
